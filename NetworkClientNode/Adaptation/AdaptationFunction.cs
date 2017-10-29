@@ -2,7 +2,7 @@ using NetworkNode.SDHFrame;
 using NetworkNode.TTF;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,25 +68,27 @@ namespace NetworkClientNode.Adaptation
                     if (vc != null)
                     {
                         Container conteriner = vc.Content.Count > 0 ? vc.Content[0] as Container : null;
-
+                        content = "";
 
 
                         if (conteriner != null)
                         {
                             content = conteriner.Content;
-                            if (content == null || content.Equals(""))
+                            if (content == null || content.Equals("")
+                                || Regex.Matches(content,"\\S{1,}").Count ==0
+                                )
                             {
                                 continue;
                             }
                         }
                         else
                         {
-                            content = "Error: Container does not transport client data";
+                           // content = "Error: Container does not transport client data";
                         }
                     }
                     else
                     {
-                        content = "Error: Container does not transport client data";
+                        //content = "Error: Container does not transport client data";
                     }
 
                     streamsData.Add(stream, content);
