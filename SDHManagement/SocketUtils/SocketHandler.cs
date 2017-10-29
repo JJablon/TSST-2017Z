@@ -228,6 +228,13 @@ namespace SDHManagement2.SocketUtils
             }
             return response;
         }
+        public string addConfig (string node, string path, char mode)
+        {
+            LoadConfig(node,path);
+            return "DONE";
+
+
+        }
         public string commandHandle(string command, string node)
         {
             if (node.Length < 1)
@@ -300,6 +307,29 @@ namespace SDHManagement2.SocketUtils
                 string result = "";
                 if (openFileDialog.ShowDialog() == true)
                     result = File.ReadAllText(openFileDialog.FileName);
+                this.sendCommand(nodeName, result, true);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void LoadConfig(String nodeName, String path)
+        {
+            //OpenFileDialog openFileDialog = new OpenFileDialog();
+            //string defaultDirectoryPath = Directory.GetCurrentDirectory();
+            //string path = new DirectoryInfo(((((new DirectoryInfo(defaultDirectoryPath).Parent).Parent).Parent).Parent).FullName + "\\Configs").ToString();
+            //openFileDialog.InitialDirectory = path;
+            //openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            //openFileDialog.FilterIndex = 2;
+            //openFileDialog.RestoreDirectory = true;
+
+            try
+            {
+
+                string result = "";
+              //  if (openFileDialog.ShowDialog() == true)
+                    result = File.ReadAllText(path);
                 this.sendCommand(nodeName, result, true);
             }
             catch (Exception ex)

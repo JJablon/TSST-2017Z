@@ -36,6 +36,7 @@
             <ComboBox x:Name="selectionBox" Canvas.Left="19" Canvas.Top="85" Width="128" Height="37" SelectionChanged="selectionBox_SelectionChanged"/>
             <Label x:Name="labell" Content="Klient / Pole" Canvas.Left="28" Canvas.Top="56" FontSize="18.667"/>
         </Canvas>
+        <Button x:Name="Load_All" Content="Load All" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="580,379,0,0" Click="Load_All_Click"/>
 
     </Grid>
 </Window>

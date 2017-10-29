@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using SDHManagement2.FileUtils;
 using SDHManagement2.Models;
 using SDHManagement2.SocketUtils;
+using Microsoft.Win32;
 
 namespace SDHManagement2
 {
@@ -63,7 +65,7 @@ namespace SDHManagement2
             selectionBox.IsEnabled = false;
             actionBox.IsEnabled = false;
             nodeBox.IsEnabled = false;
-
+            Load_All.IsEnabled = false;
             console.Items.Add(DateTime.Now.ToString("HH:mm:ss tt") + ": Konsola zarządzania");
             selectionBox.ItemsSource = selection.ToList();
             actionBox.ItemsSource = actionaNameList.ToList();
@@ -227,6 +229,7 @@ namespace SDHManagement2
             button2.IsEnabled = true;
             addNewButton.IsEnabled = true;
             initialised = true;
+            Load_All.IsEnabled = true;
 
 
         }
@@ -301,6 +304,51 @@ namespace SDHManagement2
         private void actionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void Load_All_Click(object sender, RoutedEventArgs e)
+        {
+            String[] lines = null;
+            try
+            {
+                //var y = Path.GetFullPath("..\\..\\..\\config\\");
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                string defaultDirectoryPath = Directory.GetCurrentDirectory();
+                string path_def = new DirectoryInfo(((((new DirectoryInfo(defaultDirectoryPath).Parent).Parent).Parent).Parent).FullName + "\\Configs").ToString();
+                openFileDialog.InitialDirectory = path_def;
+                openFileDialog.Filter = "ini files (*.ini)|*.ini|All files (*.*)|*.*";
+                //openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    lines = File.ReadAllLines(openFileDialog.FileName);
+                }
+
+                //var lines = File.ReadAllLines ("..\\..\\..\\config\\list.ini");
+
+                foreach (string s in lines)
+                {
+                    string type = s.Split('|')[0]; //node = N, client = C
+                    string nodeName = s.Split('|')[1];
+
+                    string path = s.Split('|')[2];
+                    string fullpath = Path.GetFullPath("..\\..\\..\\Configs"+path);
+                    socketHandler.LoadConfig(nodeName, fullpath );
+                    //nodeName = nodeBox.Text;
+                    //if (selectionBox.SelectedIndex == 0)
+                    //{
+                    //     action = actionList[actionBox.SelectedIndex];
+                    // }
+                    // else
+                    // {
+                    //  action = clientAction[actionBox.SelectedIndex];
+                    // }
+
+                    //socketHandler.commandHandle(action, nodeName);
+                }
+            }
+            catch (Exception) { }
         }
     }
 }
